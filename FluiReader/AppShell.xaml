@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="FluiReader.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ex="clr-namespace:FluiReader.Extensions.Markup"
+    xmlns:views="clr-namespace:FluiReader.Views"
+    x:Name="shell">
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout>
+            <Label>HEADER</Label>
+            <Image Source="dotnet_bot.svg" />
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+    <FlyoutItem
+        Title="{ex:Locale Key=HomePage}"
+        Icon="{ex:FluentRegularIconSource IconName=Home_32_regular}"
+        Route="Home">
+        <ShellContent ContentTemplate="{DataTemplate views:MainPage}" />
+    </FlyoutItem>
+    <FlyoutItem
+        Title="{ex:Locale Key=SubscriptionPage}"
+        Icon="{ex:FluentRegularIconSource IconName=Feed_32_regular}"
+        Route="Subscriptions">
+        <ShellContent Title="Subscriptions" ContentTemplate="{DataTemplate views:SubscriptionPage}" />
+    </FlyoutItem>
+    <!--<FlyoutItem>
+        <Shell.ItemTemplate>
+            <DataTemplate>
+                <Label>PINNED SUB</Label>
+            </DataTemplate>
+        </Shell.ItemTemplate>
+        <ShellContent ContentTemplate="{DataTemplate views:MainPage}" Routing.Route="PIN" />
+    </FlyoutItem>-->
+    <FlyoutItem Title="{ex:Locale Key=SettingPage}" Icon="{ex:FluentRegularIconSource IconName=Settings_32_regular}">
+        <ShellContent ContentTemplate="{DataTemplate views:SettingPage}" Route="SettingPage" />
+    </FlyoutItem>
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout>
+            <Label>FOOTER</Label>
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
+</Shell>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FluiReader.Views.AddSubscriptionModalPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ex="clr-namespace:FluiReader.Extensions.Markup"
+    xmlns:vm="clr-namespace:FluiReader.ViewModels"
+    Title="AddSubscriptionModalPage"
+    Padding="100"
+    x:DataType="vm:AddSubscriptionPageViewModel"
+    BackgroundColor="AliceBlue"
+    Shell.PresentationMode="ModalAnimated">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="11*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <TableView Grid.Row="0">
+            <TableSection>
+                <EntryCell
+                    Label="{ex:Locale Key=FeedUrl}"
+                    Placeholder="URL of the FEED"
+                    Text="{Binding Link}" />
+                <ImageCell
+                    ImageSource="{ex:FluentRegularIconSource Color=Black,
+                                                             IconName={Binding LinkValidIcon,
+                                                                               Mode=OneWay}}"
+                    Text="{Binding LinkValidStatus, Mode=OneWay}"
+                    TextColor="MediumVioletRed" />
+            </TableSection>
+            <TableSection>
+                <ImageCell Detail="{Binding Entity.Title}" Text="{ex:Locale Key=FeedTitle}" />
+                <TextCell Detail="{Binding Entity.Type}" Text="{ex:Locale Key=FeedType}" />
+            </TableSection>
+        </TableView>
+        <FlexLayout
+            Grid.Row="1"
+            JustifyContent="SpaceEvenly"
+            Wrap="NoWrap">
+            <Button Command="{Binding SaveCommand}" Text="{ex:Locale Key=Save}" />
+            <Button Command="{Binding CancelCommand}" Text="{ex:Locale Key=Cancel}" />
+        </FlexLayout>
+    </Grid>
+</ContentPage>
