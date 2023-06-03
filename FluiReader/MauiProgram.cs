@@ -25,7 +25,8 @@ public static class MauiProgram
 
         builder.Services.AddHttpClient()
             .AddScoped<ISubscriptionRepoService, LocalSubscriptionRepoService>()
-            .AddSingleton<LocalDatabaseService>();
+            .AddSingleton<LocalDatabaseService>()
+            .AddScoped<FeedService>();
         return builder.Build();
     }
 }

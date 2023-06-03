@@ -17,6 +17,7 @@ namespace FluiReader.Extensions
         FeedTitle,
         FeedType,
         Save,
-        Cancel
+        Cancel,
+        Reload
     }
 }

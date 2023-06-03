@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluiReader.Models;
+using FluiReader.Services;
 using FluiReader.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace FluiReader.ViewModels
             this._http = App.Services.GetRequiredService<HttpClient>();
         }
         private ObservableCollection<SubscriptionViewModel> subscriptions = new();
-        private ISubscriptionRepoService _sub;
+        private readonly ISubscriptionRepoService _sub;
         private readonly HttpClient _http;
         public ObservableCollection<SubscriptionViewModel> Subscriptions
         {
@@ -29,13 +30,24 @@ namespace FluiReader.ViewModels
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         [RelayCommand]
-        public async Task LoadDataAsync()
+        public Task LoadDataAsync()
         {
-            var data = await this._sub.GetSubscriptionAsync(Page++, PageSize);
-            foreach (var i in data)
-            {
-                this.subscriptions.Add(new(i, _http));
-            }
+            // converting model to viewmodel may take large computation. do not do it on UI thread
+            return Task.Run(async () =>
+             {
+                 var data = await this._sub.GetSubscriptionAsync(Page++, PageSize);
+                 foreach (var i in data)
+                 {
+                     this.subscriptions.Add(new(i, _http, _sub));
+                 }
+             });
+        }
+        [RelayCommand]
+        public async Task ReloadAsync()
+        {
+            this.Subscriptions = new();
+            this.Page = 1;
+            await LoadDataAsync();
         }
         [RelayCommand]
         public void NavigateToAddPage()
@@ -46,17 +58,26 @@ namespace FluiReader.ViewModels
     public partial class SubscriptionViewModel : ObservableObject
     {
         private readonly HttpClient _http;
+        private readonly ISubscriptionRepoService _sub;
+
         public Subscription Subscription { get; set; }
         [RelayCommand]
         public async void CheckUpdate()
         {
             await this.Subscription.CheckForUpdateAsync(_http);
+            await _sub.EditSubscriptionAsync(this.Subscription);
             OnPropertyChanged(nameof(Subscription));
         }
-        public SubscriptionViewModel(Subscription subscription, HttpClient http)
+        [RelayCommand]
+        public async void NavigateToFeedPage()
+        {
+            await Shell.Current.GoToAsync($"{Routes.FEED_DETAIL_PAGE}?id={Subscription.Id}");
+        }
+        public SubscriptionViewModel(Subscription subscription, HttpClient http, ISubscriptionRepoService sub)
         {
             this.Subscription = subscription;
             this._http = http;
+            this._sub = sub;
         }
     }
 }
