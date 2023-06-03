@@ -1,5 +1,6 @@
 ﻿using CodeHollow.FeedReader;
 using CodeHollow.FeedReader.Feeds;
+using FluiReader.Extensions;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -44,13 +45,16 @@ namespace FluiReader.Models
         public static async Task CheckForUpdateAsync(this Subscription sub, HttpClient _http)
         {
             if (sub.Link is null) throw new InvalidOperationException("Subscription url is null");
-            var feed = FeedReader.ReadFromString(await _http.GetStringAsync(sub.Link));
+            var res = await _http.GetStringAsync(sub.Link);
+            File.WriteAllText(Path.Combine(Constants.FeedCacheDir, sub.Link.ToSafeString()), res);
+            var feed = FeedReader.ReadFromString(res);
             sub.Title = feed.Title;
             sub.Type = feed.Type;
             sub.LastCheckedUpdate = DateTime.Now;
-            var faviconUriBuilder = new UriBuilder(sub.Link);
-            faviconUriBuilder.Path = "/favicon.ico";
-            sub.FavIcon = faviconUriBuilder.Uri;
+            sub.FavIcon = new UriBuilder(sub.Link)
+            {
+                Path = "/favicon.ico"
+            }.Uri;
         }
     }
 }

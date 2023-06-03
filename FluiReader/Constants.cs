@@ -20,6 +20,7 @@ namespace FluiReader
 
         public static string DatabasePath =>
             Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
-
+        private static readonly DirectoryInfo feedCacheDir = Directory.CreateDirectory(Path.Combine(FileSystem.CacheDirectory, "feeds"));
+        public static string FeedCacheDir => feedCacheDir.FullName;
     }
 }
