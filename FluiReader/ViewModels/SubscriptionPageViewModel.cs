@@ -30,13 +30,17 @@ namespace FluiReader.ViewModels
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         [RelayCommand]
-        public async Task LoadDataAsync()
+        public Task LoadDataAsync()
         {
-            var data = await this._sub.GetSubscriptionAsync(Page++, PageSize);
-            foreach (var i in data)
-            {
-                this.subscriptions.Add(new(i, _http, _sub));
-            }
+            // converting model to viewmodel may take large computation. do not do it on UI thread
+            return Task.Run(async () =>
+             {
+                 var data = await this._sub.GetSubscriptionAsync(Page++, PageSize);
+                 foreach (var i in data)
+                 {
+                     this.subscriptions.Add(new(i, _http, _sub));
+                 }
+             });
         }
         [RelayCommand]
         public async Task ReloadAsync()

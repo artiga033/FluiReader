@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FluiReader.Views.FeedItemPage"
-             Title="FeedItemPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="FluiReader.Views.FeedItemPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:FluiReader.ViewModels"
+    Title="FeedItemPage"
+    x:DataType="vm:FeedItemPageViewModel">
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="128" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="0"
+                FontSize="Title"
+                Text="{Binding Item.Title}" />
+            <HorizontalStackLayout
+                Grid.Row="1"
+                Margin="0,0"
+                Spacing="14">
+                <Label Text="{Binding Item.Author}" />
+                <Label Text="{Binding Item.PublishingDate}" />
+            </HorizontalStackLayout>
+            <Label
+                Grid.Row="2"
+                Margin="0,10,0,0"
+                Text="{Binding Item.Description}" />
+            <Label Grid.Row="3" Text="{Binding Item.Content}" />
+        </Grid>
+    </ScrollView>
 </ContentPage>

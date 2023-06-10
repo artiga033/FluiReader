@@ -30,7 +30,7 @@ namespace FluiReader.Services
             var lastWriteTime = File.GetLastWriteTime(cachePath);
             if (DateTime.Now - lastWriteTime > TimeSpan.FromMinutes(15))
                 await sub.CheckForUpdateAsync(_httpClient);
-            var feed = FeedReader.ReadFromFile(cachePath);
+            var feed = await FeedReader.ReadFromFileAsync(cachePath);
             return feed;
         }
         public async Task<Feed> LoadFeedAsync(int subscriptionId) => await LoadFeedAsync(await _sub.GetSubscriptionAsync(subscriptionId));

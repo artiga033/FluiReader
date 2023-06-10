@@ -39,7 +39,8 @@
                         </Frame.GestureRecognizers>
                         <Grid
                             Margin="10"
-                            BackgroundColor="AliceBlue"
+                            BackgroundColor="{AppThemeBinding Dark=#3b3b3b,
+                                                              Light=#e6e7e8}"
                             HeightRequest="200">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50" />

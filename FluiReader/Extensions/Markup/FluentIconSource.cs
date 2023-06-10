@@ -28,7 +28,6 @@ namespace FluiReader.Extensions.Markup
         public FluentRegularIconSource()
         {
             FontFamily = "FluentSystemIconsRegular";
-            Color = Colors.Black;
         }
     }
     public class FluentFilledIconSource : FontImageSource
@@ -51,8 +50,6 @@ namespace FluiReader.Extensions.Markup
         public FluentFilledIconSource()
         {
             FontFamily = "FluentSystemIconsFilled";
-            Color = Colors.Black;
-
         }
     }
 }
